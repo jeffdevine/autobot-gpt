@@ -1,6 +1,20 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
+# Small support modules used throughout the @dry-rb & @rom-rb ecosystems
+gem 'dry-core', '~> 1.0.0'
+# DSL for building class initializer with params and options
+gem 'dry-initializer', '~> 3.1.1'
+# Useful, common monads in idiomatic Ruby
+gem 'dry-monads', '~> 1.6.0'
+# Simple and extendable type system for Ruby
+gem 'dry-types', '~> 1.7.1'
+# Data validation based on predicate logic
+gem 'dry-validation', '~> 1.10.0'
+# OpenAI library for Ruby
+gem 'ruby-openai', '~> 4.0.0'
+# A readable, structured and beautiful logging for the terminal
+gem 'tty-logger', '~> 0.6.0'
 # Powerful interactive command line prompt.
 gem 'tty-prompt', '~> 0.23.1'
 # Terminal spinner for tasks that have non-deterministic time frame
