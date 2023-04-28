@@ -1,8 +1,8 @@
-require 'openai'
-require_relative 'service'
+require "openai"
+require_relative "service"
 
 class OpenAIClient < Service
-  option :message, type: Dry::Types['strict.string']
+  option :message, type: Dry::Types["strict.string"]
 
   Schema = Dry::Schema.Params do
     required(:message).filled
@@ -10,7 +10,7 @@ class OpenAIClient < Service
 
   def call
     Success.new(send_message_and_parse_response)
-  rescue StandardError => e
+  rescue => e
     log_with_failure(e.message)
   end
 
@@ -21,15 +21,15 @@ class OpenAIClient < Service
   end
 
   def messages
-    [{ role: 'user', content: @message }]
+    [{role: "user", content: @message}]
   end
 
   def model
-    @model ||= ENV.fetch('OPENAI_MODEL', 'gpt-3.5-turbo')
+    @model ||= ENV.fetch("OPENAI_MODEL", "gpt-3.5-turbo")
   end
 
   def openai_api_key
-    @openai_api_key ||= ENV.fetch('OPENAI_API_KEY', 'api_key')
+    @openai_api_key ||= ENV.fetch("OPENAI_API_KEY", "api_key")
   end
 
   def parameters
@@ -40,7 +40,7 @@ class OpenAIClient < Service
 
   def parse_response(response)
     logger.debug(response)
-    response.dig('choices', 0, 'message', 'content')
+    response.dig("choices", 0, "message", "content")
   end
 
   def send_message_and_parse_response
@@ -49,6 +49,6 @@ class OpenAIClient < Service
   end
 
   def temperature
-    @temperature ||= ENV.fetch('OPENAI_TEMPERATURE', 0.7)
+    @temperature ||= ENV.fetch("OPENAI_TEMPERATURE", 0.7)
   end
 end

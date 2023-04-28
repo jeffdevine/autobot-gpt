@@ -1,12 +1,12 @@
-require_relative 'open_ai_client'
-require_relative '../models/problem'
-require_relative 'problem_prompt_builder'
-require_relative 'service'
+require_relative "open_ai_client"
+require_relative "../models/problem"
+require_relative "problem_prompt_builder"
+require_relative "service"
 
 class ProblemEvaluator < Service
   attr_reader :requirements
 
-  option :requirements, type: Dry::Types['strict.string']
+  option :requirements, type: Dry::Types["strict.string"]
 
   Schema = Dry::Schema.Params do
     required(:requirements).filled
@@ -14,7 +14,7 @@ class ProblemEvaluator < Service
 
   def call
     Success.new(evaulate_requirements)
-  rescue StandardError => e
+  rescue => e
     log_with_failure(e.message)
   end
 

@@ -9,6 +9,6 @@ class Problem
   end
 
   def deliverables?
-    @deliverables.start_with?('- DELIVERABLE')
+    @deliverables.start_with?("- DELIVERABLE")
   end
 end
