@@ -1,10 +1,8 @@
-require 'yaml'
-
 class Problem
   attr_accessor :status
   attr_reader :deliverables, :requirements
 
-  def initialize(requirements, deliverables)
+  def initialize(requirements:, deliverables:)
     @deliverables = deliverables
     @requirements = requirements
     @status = :not_started
