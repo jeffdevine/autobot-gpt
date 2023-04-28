@@ -3,10 +3,10 @@ require_relative 'service'
 class ProblemPromptBuilder < Service
   PROMPT = 'This is an automation pipeline, please respond exactly as described below, do not deviate.'.freeze
 
-  option :requirement, type: Dry::Types['strict.string']
+  option :requirements, type: Dry::Types['strict.string']
 
   Schema = Dry::Schema.Params do
-    required(:requirement).filled
+    required(:requirements).filled
   end
 
   def call
@@ -16,7 +16,7 @@ class ProblemPromptBuilder < Service
   private
 
   def build_prompt
-    "#{PROMPT} First, quantify this problem: #{@requirement}\n#{extended_prompt}"
+    "#{PROMPT} First, quantify this problem: #{@requirements}\n#{extended_prompt}"
   end
 
   def extended_prompt
