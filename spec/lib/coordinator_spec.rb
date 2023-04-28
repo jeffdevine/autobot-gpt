@@ -1,7 +1,7 @@
-require 'spec_helper'
-require_relative '../../lib/coordinator'
+require "spec_helper"
+require_relative "../../lib/coordinator"
 
-RSpec.describe('Coordinator') do
+RSpec.describe("Coordinator") do
   it 'has a default status of "not started"' do
     subject = Coordinator.new
 

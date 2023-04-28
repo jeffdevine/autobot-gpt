@@ -1,10 +1,10 @@
-require 'dry-initializer'
-require 'dry-validation'
-require 'dry/core'
-require 'dry/monads'
-require 'dry/schema'
-require 'dry/types'
-require 'tty-logger'
+require "dry-initializer"
+require "dry-validation"
+require "dry/core"
+require "dry/monads"
+require "dry/schema"
+require "dry/types"
+require "tty-logger"
 
 class Service
   extend Dry::Initializer
@@ -16,7 +16,7 @@ class Service
     return Failure.new(validation.errors.to_h) unless validation.success?
 
     new(**args).call
-  rescue StandardError => e
+  rescue => e
     handle_fatal_error(e)
   end
 
@@ -34,7 +34,7 @@ class Service
 
   def logger
     @logger ||= TTY::Logger.new do |config|
-      config.level = ENV.fetch('DEBUG', false) ? :debug : :error
+      config.level = ENV.fetch("DEBUG", false) ? :debug : :error
     end
   end
 end
