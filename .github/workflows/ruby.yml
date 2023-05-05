@@ -28,8 +28,8 @@ jobs:
         chmod +x ./cc-test-reporter
         ./cc-test-reporter before-build
 
-    - name: Run StandardRB
-      run: bundle exec standardrb
+    - name: Run linter
+      run: bundle exec rubocop
 
     - name: Run tests with RSpec
       run: bundle exec rspec

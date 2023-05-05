@@ -2,9 +2,15 @@ require "spec_helper"
 require_relative "../../../lib/services/open_ai_client"
 
 RSpec.describe(OpenAIClient) do
+  let(:content) { {"content" => "Why did the tomato turn red? Because it saw the salad dressing!"} }
+  let(:message) { {"message" => content} }
+  let(:response) { {"choices" => [message]} }
+  let(:mock_client) { instance_double(OpenAI::Client, chat: response) }
+  let(:mock_logger) { instance_double(TTY::Logger, debug: true, error: true, fatal: true) }
+
   describe("#call") do
     it "returns a success monad" do
-      allow_any_instance_of(OpenAI::Client).to receive(:chat).and_return({"choices" => []})
+      allow(OpenAI::Client).to receive(:new).and_return(mock_client)
 
       response = described_class.call(message: "tell a joke")
 
@@ -12,10 +18,7 @@ RSpec.describe(OpenAIClient) do
     end
 
     it "returns a response based on provided string" do
-      content = {"content" => "Why did the tomato turn red? Because it saw the salad dressing!"}
-      message = {"message" => content}
-
-      allow_any_instance_of(OpenAI::Client).to receive(:chat).and_return({"choices" => [message]})
+      allow(OpenAI::Client).to receive(:new).and_return(mock_client)
 
       response = described_class.call(message: "tell a joke")
 
@@ -23,22 +26,17 @@ RSpec.describe(OpenAIClient) do
     end
 
     it "logs the response from OpenAI when DEBUG is set" do
-      ENV["DEBUG"] = "true"
-      mock_logger = double
-
-      allow_any_instance_of(OpenAI::Client).to receive(:chat).and_return({"choices" => []})
+      allow(OpenAI::Client).to receive(:new).and_return(mock_client)
       allow(TTY::Logger).to receive(:new).and_return(mock_logger)
-
-      expect(mock_logger).to receive(:debug).with({"choices" => []})
 
       described_class.call(message: "tell a joke")
 
-      ENV["DEBUG"] = nil
+      expect(mock_logger).to have_received(:debug).with(response)
     end
 
     context("when OpenAI::Client raises an error") do
       it "returns a failure monad" do
-        allow_any_instance_of(OpenAI::Client).to receive(:chat).and_raise(StandardError)
+        allow(OpenAI::Client).to receive(:new).and_raise(StandardError)
 
         response = described_class.call(message: "tell a joke")
 
@@ -46,14 +44,12 @@ RSpec.describe(OpenAIClient) do
       end
 
       it "logs an error message" do
-        mock_logger = double
-
-        allow_any_instance_of(OpenAI::Client).to receive(:chat).and_raise(StandardError)
+        allow(OpenAI::Client).to receive(:new).and_raise(StandardError)
         allow(TTY::Logger).to receive(:new).and_return(mock_logger)
 
-        expect(mock_logger).to receive(:error).with("[OpenAIClient] - StandardError")
-
         described_class.call(message: "tell a joke")
+
+        expect(mock_logger).to have_received(:error).with("[OpenAIClient] - StandardError")
       end
     end
 
@@ -65,13 +61,11 @@ RSpec.describe(OpenAIClient) do
       end
 
       it "logs an error message" do
-        mock_logger = double
-
         allow(TTY::Logger).to receive(:new).and_return(mock_logger)
 
-        expect(mock_logger).to receive(:fatal).with("false violates constraints (type?(String, false) failed)")
-
         described_class.call(message: false)
+
+        expect(mock_logger).to have_received(:fatal).with("false violates constraints (type?(String, false) failed)")
       end
     end
   end

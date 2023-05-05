@@ -64,5 +64,5 @@ bundle exec rspec
 To look for code and linting issues, run the following:
 
 ```
-bundle exec standard
+bundle exec rubocop
 ```
