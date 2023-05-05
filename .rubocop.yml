@@ -9,6 +9,7 @@ AllCops:
   NewCops: enable
   Exclude:
     - solution
+    - vendor/bundle/**/*
 
 RSpec:
   Enabled: true
