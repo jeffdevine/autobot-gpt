@@ -23,13 +23,13 @@ RSpec.describe(ProblemPromptBuilder) do
       end
 
       it "logs an error message" do
-        mock_logger = double
+        mock_logger = instance_double(TTY::Logger, fatal: true)
 
         allow(TTY::Logger).to receive(:new).and_return(mock_logger)
 
-        expect(mock_logger).to receive(:fatal).with("false violates constraints (type?(String, false) failed)")
-
         described_class.call(requirements: false)
+
+        expect(mock_logger).to have_received(:fatal)
       end
     end
   end

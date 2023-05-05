@@ -3,11 +3,12 @@ require_relative "../../../lib/models/problem"
 require_relative "../../../lib/services/problem_evaluator"
 
 RSpec.describe(ProblemEvaluator) do
+  let(:failure) { Dry::Monads::Result::Mixin::Failure.new(false) }
+  let(:success) { Dry::Monads::Result::Mixin::Success.new("- DELIVERABLE: 1") }
+
   describe("#call") do
     it "returns a success monad" do
-      success = Dry::Monads::Result::Mixin::Success.new("- DELIVERABLE: 1")
-
-      allow_any_instance_of(OpenAIClient).to receive(:call).and_return(success)
+      allow(OpenAIClient).to receive(:call).and_return(success)
 
       response = described_class.call(requirements: "write a soduku game")
 
@@ -15,9 +16,7 @@ RSpec.describe(ProblemEvaluator) do
     end
 
     it "contains a populated problem object" do
-      success = Dry::Monads::Result::Mixin::Success.new("- DELIVERABLE: 1")
-
-      allow_any_instance_of(OpenAIClient).to receive(:call).and_return(success)
+      allow(OpenAIClient).to receive(:call).and_return(success)
 
       response = described_class.call(requirements: "write a soduku game")
 
@@ -26,9 +25,7 @@ RSpec.describe(ProblemEvaluator) do
 
     context("when OpenAI::Client raises an error") do
       it "returns a failure monad" do
-        failure = Dry::Monads::Result::Mixin::Failure.new("- DELIVERABLE: 1")
-
-        allow_any_instance_of(OpenAIClient).to receive(:call).and_return(failure)
+        allow(OpenAIClient).to receive(:call).and_return(failure)
 
         response = described_class.call(requirements: "write a soduku game")
 
@@ -44,13 +41,13 @@ RSpec.describe(ProblemEvaluator) do
       end
 
       it "logs an error message" do
-        mock_logger = double
+        mock_logger = instance_double(TTY::Logger, fatal: true)
 
         allow(TTY::Logger).to receive(:new).and_return(mock_logger)
 
-        expect(mock_logger).to receive(:fatal).with("false violates constraints (type?(String, false) failed)")
-
         described_class.call(requirements: false)
+
+        expect(mock_logger).to have_received(:fatal).with("false violates constraints (type?(String, false) failed)")
       end
     end
   end
