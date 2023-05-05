@@ -25,6 +25,8 @@ group :test do
   gem "rspec", "~> 3.9"
   # Format RSpec output for CircleCI
   gem "rspec_junit_formatter", "~> 0.4"
+  # Ruby linter and formatter
+  gem "rubocop", "~> 1.50.2"
   # RSpec-specific analysis for your projects
   gem "rubocop-rspec", "~> 2.20.0"
   # Ruby's bikeshed-proof linter and formatter
