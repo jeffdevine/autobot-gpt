@@ -12,8 +12,10 @@ class Service
   extend Dry::Core::ClassAttributes
 
   def self.call(**args)
-    validation = self::Schema.call(args)
-    return Failure.new(validation.errors.to_h) unless validation.success?
+    if const_defined?(:Schema)
+      validation = self::Schema.call(args)
+      return Failure.new(validation.errors.to_h) unless validation.success?
+    end
 
     new(**args).call
   rescue => e
