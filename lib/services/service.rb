@@ -2,7 +2,6 @@ require "dry-initializer"
 require "dry-validation"
 require "dry/core"
 require "dry/monads"
-require "dry/schema"
 require "dry/types"
 require "tty-logger"
 
@@ -12,11 +11,6 @@ class Service
   extend Dry::Core::ClassAttributes
 
   def self.call(**args)
-    if const_defined?(:Schema)
-      validation = self::Schema.call(args)
-      return Failure.new(validation.errors.to_h) unless validation.success?
-    end
-
     new(**args).call
   rescue => e
     handle_fatal_error(e)

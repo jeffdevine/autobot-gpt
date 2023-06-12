@@ -4,10 +4,6 @@ require_relative "service"
 class OpenAIClient < Service
   option :message, type: Dry::Types["strict.string"]
 
-  Schema = Dry::Schema.Params do
-    required(:message).filled
-  end
-
   def call
     Success.new(send_message_and_parse_response)
   rescue => e
