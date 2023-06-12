@@ -6,7 +6,22 @@ Autobot GPT is a ruby port of Adam McMurchie's [Automator](https://github.com/mu
 ## What can Autobot do?
 It is early days, and it currently mimics the functionality of [Automator](https://github.com/murchie85/GPT_AUTOMATE). `Autobot` will ask you to describe your requirements and determine if it can use [OpenAI](https://openai.com) models to write software for your request.
 
+## To Do
+- [X] Initial port of Automator
+- [ ] Switch from YAML to JSON for prompt interaction
+- [ ] Class to decompose the problem steps and marshal reponses to and from OpenAI
+- [ ] Initial prompt tweaks to add strong guardrails
+
 # Environment Setup
+
+## Environment Variables
+The following environment variables are used to interact with OpenAI API:
+
+|Name | Description | Required? | Default |
+|---|---|---|---|
+|OPENAI_API_KEY | Your OpenAI API Key | Yes| |
+|OPENAI_MODEL | The OpenAI model to use | No | `gpt-3.5-turbo` |
+|OPENAI_TEMPERATURE | The temperature to use when generating text | No | `0.7` |
 
 ## macOS
 
