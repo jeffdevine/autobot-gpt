@@ -8,10 +8,6 @@ class ProblemEvaluator < Service
 
   option :requirements, type: Dry::Types["strict.string"]
 
-  Schema = Dry::Schema.Params do
-    required(:requirements).filled
-  end
-
   def call
     Success.new(evaulate_requirements)
   rescue => e

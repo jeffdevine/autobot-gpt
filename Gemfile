@@ -15,6 +15,8 @@ gem "dry-validation", "~> 1.10.0"
 gem "ruby-openai", "~> 4.0.0"
 # A readable, structured and beautiful logging for the terminal
 gem "tty-logger", "~> 0.6.0"
+# Terminal output paging
+gem "tty-pager", "~> 0.14.0"
 # Powerful interactive command line prompt.
 gem "tty-prompt", "~> 0.23.1"
 # Terminal spinner for tasks that have non-deterministic time frame
@@ -25,6 +27,8 @@ group :test do
   gem "rspec", "~> 3.9"
   # Format RSpec output for CircleCI
   gem "rspec_junit_formatter", "~> 0.4"
+  # Ruby linter and formatter
+  gem "rubocop", "~> 1.50.2"
   # RSpec-specific analysis for your projects
   gem "rubocop-rspec", "~> 2.20.0"
   # Ruby's bikeshed-proof linter and formatter
